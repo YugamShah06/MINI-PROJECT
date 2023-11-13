@@ -1,0 +1,121 @@
+from datetime import date
+index = date.weekday(date.today())
+# def smessage(pnum,hr,min):
+# pwk.sendwhatmsg(pnum, "ok", hr, min)
+
+
+# def messageinput():
+#     hr= int(input("enter at what hour u want to send the message : "))
+#     min= int(input("enter at what minute u want to send the message : "))
+#     pnum=input("enter phone number : ")
+#     smessage(pnum,hr,min)
+
+
+
+token = ""
+
+updater = Updater(token,
+				  use_context=True)
+dpc = updater.dispatcher
+
+
+
+	
+
+
+def help(update: Update, context: CallbackContext):
+	update.message.reply_text("""Available Commands :-
+		
+	mess - for today's mess menu
+	/instagram - To get instagram URL
+	
+	""")
+
+def start(update: Update, context: CallbackContext):
+	update.message.reply_text("Welcome ,Be Patient I suck.")
+	update.message.reply_text("/help for more info")
+
+	
+	
+
+
+def gmail_url(update: Update, context: CallbackContext):
+	update.message.reply_text(
+			"Your gmail link here (I am not\
+		giving mine one for security reasons)")
+
+
+# def youtube_url(update: Update, context: CallbackContext):
+# 	update.message.reply_text("Youtube Link =>\
+# 	https://www.youtube.com/")
+
+
+
+
+
+def unknown(update: Update, context: CallbackContext):
+	day=int(date.isoweekday(date.today()))
+
+	cursor.execute("Select * from messtt where weekday = ?",[day])
+	result=cursor.fetchone()
+	if ((update.message.text).lower() == 'mess'):
+		
+		update.message.reply_text('BREAKFAST:--')
+		update.message.reply_text(result[1])
+		update.message.reply_text('LUNCH:--')
+		update.message.reply_text(result[2])
+		update.message.reply_text('SNACKS:--')
+		update.message.reply_text(result[3])
+		update.message.reply_text('DINNER:--')
+		update.message.reply_text(result[4])
+	elif ((update.message.text).lower() == 'breakfast'):
+		update.message.reply_text('BREAKFAST:--')
+		update.message.reply_text(result[1])
+	elif ((update.message.text).lower() == 'lunch'):
+		update.message.reply_text('LUNCH:--')
+		update.message.reply_text(result[2])
+	elif ((update.message.text).lower() == 'snacks'):
+		update.message.reply_text('SNACKS:--')
+		update.message.reply_text(result[3])
+	elif ((update.message.text).lower() == 'dinner'):
+		update.message.reply_text('DINNER:--')
+		update.message.reply_text(result[4])
+	  
+	elif (update.message.text).lower() in ('hello', 'hi', 'sup'):
+		update.message.reply_text("Hi how it's going?")
+	elif (update.message.text).lower() in ('good','great','ok',):
+		update.message.reply_text("Great")	
+	elif ((update.message.text).lower()== "nagpur ki pabliq"):
+		update.message.reply_text("bole toh taklif")
+	
+
+# def unknown_text(update:Update ,text :str)->str:
+# 	if('hello' in text):
+# 		print('hi')
+# 	
+# 	else:
+# 		print("Sorry I can't recognize you , you said '%s'" % update.message.text)
+
+def insta(update: Update, context: CallbackContext):
+	update.message.reply_text(
+		"Instagram : ")
+
+
+dpc.add_handler(CommandHandler('start', start))
+
+# dpc.add_handler(CommandHandler('youtube', youtube_url))
+
+dpc.add_handler(CommandHandler('help', help))
+
+dpc.add_handler(CommandHandler('linkedin', linkedIn_url))
+
+dpc.add_handler(CommandHandler('gmail', gmail_url))
+
+dpc.add_handler(CommandHandler('instagram', insta))
+
+# dpc.add_handler(MessageHandler(Filters.command, unknown_text))        # Filters out unknown commands
+
+# Filters out unknown messages.
+dpc.add_handler(MessageHandler(Filters.text, unknown))
+
+updater.start_polling()
